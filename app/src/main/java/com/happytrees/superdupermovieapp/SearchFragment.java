@@ -64,6 +64,7 @@ public class SearchFragment extends Fragment {//PARENT FRAGMENT FOR SEARCH TABS 
             }
         });
 
+
     }
 }
 

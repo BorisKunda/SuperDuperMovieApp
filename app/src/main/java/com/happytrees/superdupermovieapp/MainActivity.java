@@ -65,16 +65,10 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public boolean onMenuItemActionCollapse(MenuItem item) {
-                getSupportFragmentManager().popBackStack();//removes search fragment
+                fragmentManager.beginTransaction().remove(searchFragment).commit();
                 return true;
             }
         });
-
-        // Get the SearchView and set the searchable configuration
-        //SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-
-
-
         return true;
 
 
