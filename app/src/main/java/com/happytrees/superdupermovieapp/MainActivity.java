@@ -22,15 +22,18 @@ public class MainActivity extends AppCompatActivity {
     private FragmentManager fragmentManager;
     private SearchFragment searchFragment;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+        getSupportActionBar().setDisplayShowTitleEnabled(false);//remove title from action bar
+
         fragmentManager = getSupportFragmentManager();
         //FRAGMENTS
         searchFragment = new SearchFragment();
-
 
 
         //SPLASH FRAGMENT - FIX
@@ -40,7 +43,6 @@ public class MainActivity extends AppCompatActivity {
         if (splashed != true) {//if splashed is true then activity already had called splash fragment once.
             splashFrag();
         }
-
 
 
     }
@@ -69,25 +71,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // Get the SearchView and set the searchable configuration
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
+        //SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
 
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {//when search button in soft keyboard is clicked
-                Log.e("query", query);
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                //no need in this method
-                return false;
-            }
-        });
-
-        //when search button in action bar is clicked
-        searchView.setOnSearchClickListener(v -> Log.e("OnSearchClickListener", "click"));
 
 
         return true;
@@ -100,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
     //adds splash fragment
     void splashFrag() {
         SplashFragment splashFragment = new SplashFragment();
-        FragmentManager fragmentManager =getSupportFragmentManager();//call the Fragment Manager
+        FragmentManager fragmentManager = getSupportFragmentManager();//call the Fragment Manager
         fragmentManager.beginTransaction().replace(R.id.fragment_container, splashFragment).commit();
         splashed = true;
     }
