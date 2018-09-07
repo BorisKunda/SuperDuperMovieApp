@@ -30,12 +30,12 @@ public class SplashFragment extends Fragment {
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//lock device to portrait mode
 
 
-        //closes this fragment after 3 seconds
+        //closes this fragment after 2.5 seconds
         new Handler().postDelayed(() -> {
             ((AppCompatActivity) getActivity()).getSupportActionBar().show();//re-enable action bar upon splash fragment closing
             getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);//restore ability to change configuration
-            getActivity().getSupportFragmentManager().beginTransaction().remove(SplashFragment.this).commit();//close splash fragment after 3 seconds
-        }, 3000);
+            getActivity().getSupportFragmentManager().beginTransaction().remove(SplashFragment.this).commit();//close splash fragment after 2.5 seconds
+        }, 2500);
 
         return v;
     }
