@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:background="#1A1">
+        android:background="#1B1B1B">
 
     </RelativeLayout>
 
