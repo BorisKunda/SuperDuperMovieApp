@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:background="#1B1B1B"
     android:layout_height="match_parent"
-    tools:context=".SearchFragment">
+    tools:context=".fragments.SearchFragment">
 
     <android.support.v4.view.ViewPager
         android:id="@+id/SearchFragmentViewPager"

@@ -1,10 +1,13 @@
-package com.happytrees.superdupermovieapp;
+package com.happytrees.superdupermovieapp.adapters;
 
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
+
+import com.happytrees.superdupermovieapp.fragments.FragmentActors;
+import com.happytrees.superdupermovieapp.fragments.FragmentMovies;
+import com.happytrees.superdupermovieapp.fragments.FragmentTVShows;
 
 public class SearchPagerAdapter extends FragmentStatePagerAdapter {
 

@@ -4,14 +4,12 @@
     android:layout_width="match_parent"
     android:background="#1B1B1B"
     android:layout_height="match_parent"
-    tools:context=".FragmentMovies">
+    tools:context=".fragments.FragmentMovies">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:id="@+id/moviesTV"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="MOVIES"
-        android:textSize="70sp"/>
+   <android.support.v7.widget.RecyclerView
+       android:layout_width="match_parent"
+       android:layout_height="match_parent"
+       android:id="@+id/searchMovielist">
+   </android.support.v7.widget.RecyclerView>
 
 </RelativeLayout>

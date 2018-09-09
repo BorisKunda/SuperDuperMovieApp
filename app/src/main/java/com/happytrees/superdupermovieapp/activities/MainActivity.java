@@ -1,10 +1,7 @@
-package com.happytrees.superdupermovieapp;
+package com.happytrees.superdupermovieapp.activities;
 
 
-import android.app.SearchManager;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.ComponentName;
-import android.content.Context;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,11 +10,19 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
+import com.happytrees.superdupermovieapp.R;
+import com.happytrees.superdupermovieapp.ViewModels.SearchViewModel;
+import com.happytrees.superdupermovieapp.fragments.SearchFragment;
+import com.happytrees.superdupermovieapp.fragments.SplashFragment;
 
 public class MainActivity extends AppCompatActivity {
+
+    //movie db:
+    // key: 281181dbefe0c9f3d4af2d13adc51454
+    // https://api.themoviedb.org/3/search/movie?&query=interstellar&api_key=281181dbefe0c9f3d4af2d13adc51454  -> movies
+    // https://api.themoviedb.org/3/search/person?api_key=281181dbefe0c9f3d4af2d13adc51454&query=brad%20pit -> people
+    // https://api.themoviedb.org/3/search/tv?api_key=281181dbefe0c9f3d4af2d13adc51454&query=stranger%20things -> tv shows
+
 
 
     private boolean splashed = false;
@@ -84,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                Log.e("d","f" );
                 searchViewModel.searchQuery.setValue(query);
                 return true;
             }
@@ -116,22 +122,5 @@ public class MainActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
     }
 
-
- /*   @Override
-    public void search(TextView tv) {
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                Log.d("d","d" );
-                tv.setText(query);
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                return false;
-            }
-        });
-    } */
 }
 

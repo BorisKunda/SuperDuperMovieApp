@@ -1,4 +1,4 @@
-package com.happytrees.superdupermovieapp;
+package com.happytrees.superdupermovieapp.fragments;
 
 
 import android.content.pm.ActivityInfo;
@@ -6,14 +6,14 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+
+import com.happytrees.superdupermovieapp.R;
 
 
-public class SplashFragment extends Fragment {
+public class SplashFragment extends Fragment {//provides splash screen
 
 
     public SplashFragment() {
@@ -30,7 +30,7 @@ public class SplashFragment extends Fragment {
         getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//lock device to portrait mode
 
 
-        //closes this fragment after 2.5 seconds
+        //closes splash fragment after 2.5 seconds
         new Handler().postDelayed(() -> {
             ((AppCompatActivity) getActivity()).getSupportActionBar().show();//re-enable action bar upon splash fragment closing
             getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);//restore ability to change configuration

@@ -1,19 +1,16 @@
-package com.happytrees.superdupermovieapp;
+package com.happytrees.superdupermovieapp.fragments;
 
 
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.happytrees.superdupermovieapp.R;
+import com.happytrees.superdupermovieapp.ViewModels.SearchViewModel;
 
 
 /**
@@ -26,11 +23,6 @@ public class FragmentTVShows extends Fragment {
         // Required empty public constructor
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,12 +33,7 @@ public class FragmentTVShows extends Fragment {
         TextView tv = vSh.findViewById(R.id.showsTV);
 
         SearchViewModel tvModel = ViewModelProviders.of(getActivity()).get(SearchViewModel.class);//create association between this activity and ViewModel.
-        tvModel.searchQuery.observe(this, new Observer() {
-            @Override
-            public void onChanged(@Nullable Object o) {
-                tv.setText(o.toString());
-            }
-        });
+        tvModel.searchQuery.observe(this, o -> tv.setText(o.toString()));//observe changes in searchQuery live data
 
         return vSh;
     }
