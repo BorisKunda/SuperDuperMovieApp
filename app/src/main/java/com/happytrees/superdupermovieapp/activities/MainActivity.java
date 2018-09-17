@@ -1,6 +1,7 @@
 package com.happytrees.superdupermovieapp.activities;
 
 
+import android.app.Fragment;
 import android.arch.lifecycle.ViewModelProviders;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -17,12 +18,8 @@ import com.happytrees.superdupermovieapp.fragments.SplashFragment;
 
 public class MainActivity extends AppCompatActivity {
 
-    //movie db:
-    // key: 281181dbefe0c9f3d4af2d13adc51454
-    // https://api.themoviedb.org/3/search/movie?&query=interstellar&api_key=281181dbefe0c9f3d4af2d13adc51454  -> movies
-    // https://api.themoviedb.org/3/search/person?api_key=281181dbefe0c9f3d4af2d13adc51454&query=brad%20pit -> people
-    // https://api.themoviedb.org/3/search/tv?api_key=281181dbefe0c9f3d4af2d13adc51454&query=stranger%20things -> tv shows
-
+    // TO:DO
+    //View Model -> boolean splashed
 
 
     private boolean splashed = false;
@@ -37,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Log.e("lifecycle","ACTIVITY onCreate" );
 
         searchViewModel = ViewModelProviders.of(this).get(SearchViewModel.class);//create association between this activity and ViewModel.
 
@@ -89,14 +87,14 @@ public class MainActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                Log.e("d","f" );
-                searchViewModel.searchQuery.setValue(query);
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                return false;
+                Log.e("d", "d");
+                searchViewModel.searchQuery.setValue(newText);
+                return true;
             }
         });
 
@@ -122,5 +120,40 @@ public class MainActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
     }
 
+  /*  @Override
+    public void onAttachFragment(Fragment fragment) {
+        super.onAttachFragment(fragment);
+        Log.e("lifecycle","ACTIVITY onAttachFragment" );
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Log.e("lifecycle","ACTIVITY onStart" );
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.e("lifecycle","ACTIVITY onResume" );
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.e("lifecycle","ACTIVITY onPause" );
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.e("lifecycle","ACTIVITY onStop" );
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.e("lifecycle","ACTIVITY onDestroy" );
+    } */
 }
 

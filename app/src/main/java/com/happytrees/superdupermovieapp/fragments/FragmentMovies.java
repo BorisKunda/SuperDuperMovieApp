@@ -1,23 +1,30 @@
 package com.happytrees.superdupermovieapp.fragments;
 
 
+import android.app.Activity;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 
 
+import com.happytrees.superdupermovieapp.AutoFitGridLayoutManager;
+import com.happytrees.superdupermovieapp.Constants;
 import com.happytrees.superdupermovieapp.R;
+import com.happytrees.superdupermovieapp.ReusableMethods;
 import com.happytrees.superdupermovieapp.ViewModels.SearchViewModel;
 import com.happytrees.superdupermovieapp.adapters.MovieSearchAdapter;
-import com.happytrees.superdupermovieapp.models.SearchMovieResponse;
-import com.happytrees.superdupermovieapp.models.SearchMovieResult;
+import com.happytrees.superdupermovieapp.models.SearchResponse;
+import com.happytrees.superdupermovieapp.models.SearchMovieTVResult;
 import com.happytrees.superdupermovieapp.rest.ApiClient;
 import com.happytrees.superdupermovieapp.rest.ApiInterface;
 
@@ -38,54 +45,110 @@ public class FragmentMovies extends Fragment {
         // Required empty public constructor
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        Log.e("lifecycle", "FragmentMovies onAttach");
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Log.e("lifecycle", "FragmentMovies onCreate");
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        Log.e("lifecycle", "FragmentMovies onActivityCreated");
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.e("lifecycle", "FragmentMovies onStart");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.e("lifecycle", "FragmentMovies onResume");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.e("lifecycle", "FragmentMovies onPause");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.e("lifecycle", "FragmentMovies onStop");
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.e("lifecycle", "FragmentMovies onDestroyView");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.e("lifecycle", "FragmentMovies onDestroy");
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        Log.e("lifecycle", "FragmentMovies onDetach");
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View m = inflater.inflate(R.layout.fragment_fragment_movies, container, false);
+        Log.e("lifecycle", "FragmentMovies onCreateView");
 
-
-        SearchViewModel movieModel = ViewModelProviders.of(getActivity()).get(SearchViewModel.class);//create association between this activity and ViewModel.
+        SearchViewModel movieModel = ViewModelProviders.of(getActivity()).get(SearchViewModel.class);//create association between this fragment and ViewModel.
         movieModel.searchQuery.observe(this, o -> {
-            query = o.toString();
             //Retrofit
-            if (query != null) {
-
+            if (movieModel.searchQuery != null) {
+                query = o.toString();
                 ApiInterface apiInterface = ApiClient.getRetrofit().create(ApiInterface.class);
-                Call<SearchMovieResponse> call = apiInterface.getSearchedMovies(query, "281181dbefe0c9f3d4af2d13adc51454");
-                call.enqueue(new Callback<SearchMovieResponse>() {
+                Call<SearchResponse> call = apiInterface.getSearchedMovies(query, Constants.API_KEY);
+                call.enqueue(new Callback<SearchResponse>() {
                     @Override
-                    public void onResponse(Call<SearchMovieResponse> call, Response<SearchMovieResponse> response) {
-
-                        ArrayList<SearchMovieResult> searchMovieResults = new ArrayList<>();
-                        if(response!=null) {
-                            SearchMovieResponse searchMovieResponse = response.body();
-                            if(searchMovieResponse!=null) {
-                                searchMovieResults.addAll(searchMovieResponse.results);
+                    public void onResponse(Call<SearchResponse> call, Response<SearchResponse> response) {
+                        ArrayList<SearchMovieTVResult> searchMovieResults = new ArrayList<>();
+                        ArrayList<SearchMovieTVResult>searchMovieResultsFiltered = new ArrayList<>();//search movie results where those without poster filtered out
+                        SearchResponse searchResponse = response.body();
+                        if (searchResponse != null) {
+                            searchMovieResults.addAll(searchResponse.results);
+                            for (SearchMovieTVResult searchMovieTVResult : searchMovieResults){
+                                if(searchMovieTVResult.poster_path!=null) {
+                                    searchMovieResultsFiltered.add(searchMovieTVResult);
+                                }
                             }
 
-                        }
-
-
-                        if (searchMovieResults != null) {
-                            //snack bar - no results
-                            RecyclerView recyclerView = m.findViewById(R.id.searchMovielist);
-                            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-                            recyclerView.setLayoutManager(layoutManager);
-                            MovieSearchAdapter movieSearchAdapter = new MovieSearchAdapter(getActivity(), searchMovieResults);
-                            recyclerView.setAdapter(movieSearchAdapter);
-                            Log.e("d","f" );
                         } else {
-                            //no results snack bar
-
+                         //no results text view
                         }
+
+                        RecyclerView recyclerView = m.findViewById(R.id.searchMovielist);
+                        AutoFitGridLayoutManager autoFitGridLayoutManager = new AutoFitGridLayoutManager(getActivity(), 500);
+                        recyclerView.setLayoutManager(autoFitGridLayoutManager);
+                        MovieSearchAdapter movieSearchAdapter = new MovieSearchAdapter(getActivity(),searchMovieResultsFiltered);
+                        recyclerView.setAdapter(movieSearchAdapter);
+
+
                     }
 
                     @Override
-                    public void onFailure(Call<SearchMovieResponse> call, Throwable t) {
-                        Log.e("call fr movies failed", t.toString());
-                        //snack bar - something went wrong
+                    public void onFailure(Call<SearchResponse> call, Throwable t) {
+
                     }
                 });
 
@@ -95,57 +158,5 @@ public class FragmentMovies extends Fragment {
         return m;
     }
 
-
 }
 
-/*
-    final GitHubUserEndPoints apiService =
-                APIClient.getClient().create(GitHubUserEndPoints.class);
-   Call<GitHubUser> call = apiService.getUser(newString);
-        call.enqueue(new Callback<GitHubUser>() {
-
-            @Override
-            public void onResponse(Call<GitHubUser> call, Response<GitHubUser>
-                    response) {
-
-                ImageDownloader task = new ImageDownloader();
-
-                try {
-                    myImage = task.execute(response.body().getAvatar()).get();
-
-                } catch (Exception e) {
-
-                    e.printStackTrace();
-
-                }
-
-                avatarImg.setImageBitmap(myImage);
-                avatarImg.getLayoutParams().height=220;
-                avatarImg.getLayoutParams().width=220;
-
-                if(response.body().getName() == null){
-                    userNameTV.setText("No name provided");
-                } else {
-                    userNameTV.setText("Username: " + response.body().getName());
-                }
-
-                followersTV.setText("Followers: " + response.body().getFollowers());
-                followingTV.setText("Following: " + response.body().getFollowing());
-                logIn.setText("LogIn: " + response.body().getLogin());
-
-                if(response.body().getEmail() == null){
-                    email.setText("No email provided");
-                } else{
-                    email.setText("Email: " + response.body().getEmail());
-                }
-
-
-
-            }
-
-            @Override
-            public void onFailure(Call<GitHubUser> call, Throwable t) {
-                System.out.println("Failed!" + t.toString());
-            }
-        });
- */

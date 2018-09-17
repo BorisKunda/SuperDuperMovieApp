@@ -6,10 +6,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.happytrees.superdupermovieapp.Constants;
 import com.happytrees.superdupermovieapp.R;
-import com.happytrees.superdupermovieapp.models.SearchMovieResult;
+import com.happytrees.superdupermovieapp.models.SearchMovieTVResult;
 
 import java.util.ArrayList;
 
@@ -19,9 +22,9 @@ import java.util.ArrayList;
 public class MovieSearchAdapter extends RecyclerView.Adapter<MovieSearchAdapter.SearchMovieViewHolder> {
 
     private Context context;
-    private ArrayList<SearchMovieResult> smResults;
+    private ArrayList<SearchMovieTVResult> smResults;
 
-    public MovieSearchAdapter(Context context, ArrayList<SearchMovieResult> smResults) {
+    public MovieSearchAdapter(Context context, ArrayList<SearchMovieTVResult> smResults) {
         this.context = context;
         this.smResults = smResults;
     }
@@ -36,11 +39,23 @@ public class MovieSearchAdapter extends RecyclerView.Adapter<MovieSearchAdapter.
 
     }
 
+
     @Override
     public void onBindViewHolder(@NonNull SearchMovieViewHolder holder, int position) {
         //bind data to view holder
-        SearchMovieResult searchMovieResult = smResults.get(position);
-        holder.title.setText(searchMovieResult.title);
+        SearchMovieTVResult searchMovieTVResult = smResults.get(position);
+
+        if (searchMovieTVResult.poster_path == null) {
+            holder.iv.setImageResource(R.drawable.noimage);
+        } else {
+            String fullUrl = Constants.POSTER_URL_INITIAL_PART + searchMovieTVResult.poster_path;
+            //GLIDE
+            RequestOptions requestOptions = new RequestOptions();
+            requestOptions.placeholder(R.drawable.placeholder);
+            requestOptions.error(R.drawable.noimage);
+            Glide.with(context).load(fullUrl).apply(requestOptions).into(holder.iv);
+        }
+
 
     }
 
@@ -51,12 +66,17 @@ public class MovieSearchAdapter extends RecyclerView.Adapter<MovieSearchAdapter.
 
     //create inner class  YourInnerClassViewHolder extends RecyclerView.ViewHolder => implement constructor
     public class SearchMovieViewHolder extends RecyclerView.ViewHolder {
-        TextView title;
+
+        ImageView iv;
+
         public SearchMovieViewHolder(View itemView) {
             super(itemView);
-            title = itemView.findViewById(R.id.movieResult);
+
+            iv = itemView.findViewById(R.id.IV);
+
         }
 
     }
 
 }
+

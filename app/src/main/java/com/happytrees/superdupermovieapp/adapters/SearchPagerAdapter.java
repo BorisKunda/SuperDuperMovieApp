@@ -4,6 +4,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.util.Log;
 
 import com.happytrees.superdupermovieapp.fragments.FragmentActors;
 import com.happytrees.superdupermovieapp.fragments.FragmentMovies;
@@ -20,12 +21,15 @@ public class SearchPagerAdapter extends FragmentStatePagerAdapter {
         switch (position) {
             case 0:
                 FragmentMovies fragmentMovies = new FragmentMovies();
+                Log.e("lifecycle","view pager M" );
                 return fragmentMovies;
             case 1:
                 FragmentTVShows fragmentTVShows = new FragmentTVShows();
+                Log.e("lifecycle","view pager T" );
                 return fragmentTVShows;
             case 2:
                 FragmentActors fragmentActors = new FragmentActors();
+                Log.e("lifecycle","view pager A" );
                 return fragmentActors;
             default:
                 return null;
