@@ -61,28 +61,48 @@ public class FragmentTVShows extends Fragment {
                     @Override
                     public void onResponse(Call<SearchResponse> call, Response<SearchResponse> response) {
                         ArrayList<SearchMovieTVResult> searchTVResults = new ArrayList<>();
+                        ArrayList<SearchMovieTVResult> searchTVResultsFiltered = new ArrayList<>();
                         SearchResponse searchResponse = response.body();
                         if (searchResponse != null) {
                             searchTVResults.addAll(searchResponse.results);
+                            for(SearchMovieTVResult searchMovieTVResult : searchTVResults){ //ADD THIS BLOCK TO REUSABLE METHODS
+                                if(searchMovieTVResult.poster_path!=null) {
+                                    searchTVResultsFiltered.add(searchMovieTVResult);
+                                }
+                            }
+
+
+                            //filter duplicate results
+                            for(int i =0 ;i<searchTVResultsFiltered.size();i++) { ////ADD THIS BLOCK TO REUSABLE METHODS
+                                int n =0; //n -> number of times we find same items in array.Because we compare array to itself it is okay if n<1.only if n>1 it means there are duplicate items
+                                for(int k =0;k<searchTVResultsFiltered.size();k++) {
+                                    if(searchTVResultsFiltered.get(i)==searchTVResultsFiltered.get(k)) {
+                                        n++;
+                                        if(n>1) {
+                                            searchTVResultsFiltered.remove(i);
+                                        }
+                                    }
+                                }
+                            }
+
+
                         } else {
-                        //    ReusableMethods.closeMyKeyboard(vSh, getActivity());
-                        //    ReusableMethods.noResultsSnackBar(vSh);
+                            //no results text view
                         }
 
 
                         RecyclerView recyclerView = vSh.findViewById(R.id.searchTVlist);
                         AutoFitGridLayoutManager autoFitGridLayoutManager = new AutoFitGridLayoutManager(getActivity(), 500);
                         recyclerView.setLayoutManager(autoFitGridLayoutManager);
-                        MovieSearchAdapter movieSearchAdapter = new MovieSearchAdapter(getActivity(), searchTVResults);
+                        MovieSearchAdapter movieSearchAdapter = new MovieSearchAdapter(getActivity(), searchTVResultsFiltered);
                         recyclerView.setAdapter(movieSearchAdapter);
 
-                        //ReusableMethods.closeMyKeyboard(vSh,getActivity());
+
                     }
 
                     @Override
                     public void onFailure(Call<SearchResponse> call, Throwable t) {
-                     //   ReusableMethods.closeMyKeyboard(vSh,getActivity());
-                       // Snackbar.make(vSh.findViewById(R.id.movieSearchRL), "unexpected error", Snackbar.LENGTH_SHORT).show();
+                        //no results text view
                     }
                 });
             }

@@ -123,24 +123,38 @@ public class FragmentMovies extends Fragment {
                     @Override
                     public void onResponse(Call<SearchResponse> call, Response<SearchResponse> response) {
                         ArrayList<SearchMovieTVResult> searchMovieResults = new ArrayList<>();
-                        ArrayList<SearchMovieTVResult>searchMovieResultsFiltered = new ArrayList<>();//search movie results where those without poster filtered out
+                        ArrayList<SearchMovieTVResult> searchMovieResultsFiltered = new ArrayList<>();//search movie results where those without poster filtered out
                         SearchResponse searchResponse = response.body();
                         if (searchResponse != null) {
                             searchMovieResults.addAll(searchResponse.results);
-                            for (SearchMovieTVResult searchMovieTVResult : searchMovieResults){
-                                if(searchMovieTVResult.poster_path!=null) {
+                            //filter results without poster
+                            for (SearchMovieTVResult searchMovieTVResult : searchMovieResults) {
+                                if (searchMovieTVResult.poster_path != null) {
                                     searchMovieResultsFiltered.add(searchMovieTVResult);
                                 }
                             }
 
+                            //filter duplicate results
+                            for(int i =0 ;i<searchMovieResultsFiltered.size();i++) {
+                                int n =0; //n -> number of times we find same items in array.Because we compare array to itself it is okay if n<1.only if n>1 it means there are duplicate items
+                                for(int k =0;k<searchMovieResultsFiltered.size();k++) {
+                                    if(searchMovieResultsFiltered.get(i)==searchMovieResultsFiltered.get(k)) {
+                                        n++;
+                                        if(n>1) {
+                                            searchMovieResultsFiltered.remove(i);
+                                        }
+                                    }
+                                }
+                            }
+
                         } else {
-                         //no results text view
+                            //no results text view
                         }
 
                         RecyclerView recyclerView = m.findViewById(R.id.searchMovielist);
                         AutoFitGridLayoutManager autoFitGridLayoutManager = new AutoFitGridLayoutManager(getActivity(), 500);
                         recyclerView.setLayoutManager(autoFitGridLayoutManager);
-                        MovieSearchAdapter movieSearchAdapter = new MovieSearchAdapter(getActivity(),searchMovieResultsFiltered);
+                        MovieSearchAdapter movieSearchAdapter = new MovieSearchAdapter(getActivity(), searchMovieResultsFiltered);
                         recyclerView.setAdapter(movieSearchAdapter);
 
 
