@@ -65,13 +65,12 @@ public class MovieSearchAdapter extends RecyclerView.Adapter<MovieSearchAdapter.
     }
 
     //create inner class  YourInnerClassViewHolder extends RecyclerView.ViewHolder => implement constructor
-    public class SearchMovieViewHolder extends RecyclerView.ViewHolder {
+     class SearchMovieViewHolder extends RecyclerView.ViewHolder {
 
         ImageView iv;
 
-        public SearchMovieViewHolder(View itemView) {
+         SearchMovieViewHolder(View itemView) {
             super(itemView);
-
             iv = itemView.findViewById(R.id.IV);
 
         }

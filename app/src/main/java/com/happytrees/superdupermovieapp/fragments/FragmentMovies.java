@@ -116,6 +116,7 @@ public class FragmentMovies extends Fragment {
         movieModel.searchQuery.observe(this, o -> {
             //Retrofit
             if (movieModel.searchQuery != null) {
+                Log.e("deb", "deb");
                 query = o.toString();
                 ApiInterface apiInterface = ApiClient.getRetrofit().create(ApiInterface.class);
                 Call<SearchResponse> call = apiInterface.getSearchedMovies(query, Constants.API_KEY);
@@ -152,6 +153,7 @@ public class FragmentMovies extends Fragment {
                         }
 
                         RecyclerView recyclerView = m.findViewById(R.id.searchMovielist);
+                        recyclerView.setHasFixedSize(true);//If the size(width,height) of the RecyclerView doesn't depend on the adapter content you can setHasFixedSize(true). it will improve recycler view performance.
                         AutoFitGridLayoutManager autoFitGridLayoutManager = new AutoFitGridLayoutManager(getActivity(), 500);
                         recyclerView.setLayoutManager(autoFitGridLayoutManager);
                         MovieSearchAdapter movieSearchAdapter = new MovieSearchAdapter(getActivity(), searchMovieResultsFiltered);
@@ -162,7 +164,7 @@ public class FragmentMovies extends Fragment {
 
                     @Override
                     public void onFailure(Call<SearchResponse> call, Throwable t) {
-
+                        //no results text view
                     }
                 });
 

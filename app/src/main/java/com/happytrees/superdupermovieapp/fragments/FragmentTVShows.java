@@ -92,6 +92,7 @@ public class FragmentTVShows extends Fragment {
 
 
                         RecyclerView recyclerView = vSh.findViewById(R.id.searchTVlist);
+                        recyclerView.setHasFixedSize(true);
                         AutoFitGridLayoutManager autoFitGridLayoutManager = new AutoFitGridLayoutManager(getActivity(), 500);
                         recyclerView.setLayoutManager(autoFitGridLayoutManager);
                         MovieSearchAdapter movieSearchAdapter = new MovieSearchAdapter(getActivity(), searchTVResultsFiltered);
