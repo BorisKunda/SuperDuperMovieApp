@@ -2,10 +2,10 @@
 <searchable xmlns:android="http://schemas.android.com/apk/res/android"
     android:label="@string/app_name"
     android:imeOptions="actionSearch"
-    android:voiceSearchMode="showVoiceSearchButton|launchRecognizer"
-   >
+    android:hint="Your Search"
+    android:voiceSearchMode="showVoiceSearchButton|launchRecognizer">
 
-    <!--android:voiceSearchMode="showVoiceSearchButton|launchRecognizer" WILL BE ADDED IN FUTURE-->
+
     <!--this xml file is search configuration-->
     <!-- android:imeOptions="actionSearch" - puts search button in soft keyboard -->
 </searchable>

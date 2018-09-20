@@ -1,8 +1,11 @@
 package com.happytrees.superdupermovieapp.activities;
 
 
-import android.app.Fragment;
+import android.app.SearchManager;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,6 +14,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
+
 import com.happytrees.superdupermovieapp.R;
 import com.happytrees.superdupermovieapp.ViewModels.SearchViewModel;
 import com.happytrees.superdupermovieapp.fragments.SearchFragment;
@@ -19,7 +24,9 @@ import com.happytrees.superdupermovieapp.fragments.SplashFragment;
 public class MainActivity extends AppCompatActivity {
 
     // TO:DO
-    //View Model -> boolean splashed
+    //View Model -> boolean splashed save this variable in view model instead of using saveOnInstance
+    //clear search query after menu collapse
+    //check the movie db link . what are default results
 
 
     private boolean splashed = false;
@@ -34,9 +41,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Log.e("lifecycle","ACTIVITY onCreate" );
+        Log.e("lifecycle", "ACTIVITY onCreate");
+
+
 
         searchViewModel = ViewModelProviders.of(this).get(SearchViewModel.class);//create association between this activity and ViewModel.
+
 
         getSupportActionBar().setDisplayShowTitleEnabled(false);//remove title from action bar
 
@@ -65,8 +75,8 @@ public class MainActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_options, menu);
 
+        //setting menu item
         MenuItem searchItem = menu.findItem(R.id.search);
-
         searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
             @Override
             public boolean onMenuItemActionExpand(MenuItem item) {
@@ -83,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //setting search view
         searchView = (SearchView) menu.findItem(R.id.search).getActionView();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -98,6 +109,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //setting search manager to hook up searchview with searchable.xml configuration
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         return true;
 
 
@@ -120,40 +134,14 @@ public class MainActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
     }
 
-  /*  @Override
-    public void onAttachFragment(Fragment fragment) {
-        super.onAttachFragment(fragment);
-        Log.e("lifecycle","ACTIVITY onAttachFragment" );
-    }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Log.e("lifecycle","ACTIVITY onStart" );
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.e("lifecycle","ACTIVITY onResume" );
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.e("lifecycle","ACTIVITY onPause" );
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Log.e("lifecycle","ACTIVITY onStop" );
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.e("lifecycle","ACTIVITY onDestroy" );
-    } */
+ @Override
+ protected void onNewIntent(Intent intent) {
+     if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+         String voiceQuery = intent.getStringExtra(SearchManager.QUERY);
+         searchViewModel.searchQuery.setValue(voiceQuery);
+         //change search view text
+     }
+ }
 }
 
