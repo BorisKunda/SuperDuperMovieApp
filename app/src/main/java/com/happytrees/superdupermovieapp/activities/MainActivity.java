@@ -109,6 +109,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //searchView.setQueryHint(); changes query hint
+
         //setting search manager to hook up searchview with searchable.xml configuration
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
@@ -140,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
      if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
          String voiceQuery = intent.getStringExtra(SearchManager.QUERY);
          searchViewModel.searchQuery.setValue(voiceQuery);
-         //change search view text
+         searchView.setQuery(voiceQuery,true);
      }
  }
 }
