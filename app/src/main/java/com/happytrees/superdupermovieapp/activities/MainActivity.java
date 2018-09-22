@@ -18,12 +18,15 @@ import android.widget.Toast;
 
 import com.happytrees.superdupermovieapp.R;
 import com.happytrees.superdupermovieapp.ViewModels.SearchViewModel;
+import com.happytrees.superdupermovieapp.fragments.FragmentChanger;
 import com.happytrees.superdupermovieapp.fragments.SearchFragment;
 import com.happytrees.superdupermovieapp.fragments.SplashFragment;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements FragmentChanger {
 
     // TO:DO
+    //Fix bug : no text in search .still there results
+    //Fix Crash -> rotation change splash fragments
     //View Model -> boolean splashed save this variable in view model instead of using saveOnInstance
     //clear search query after menu collapse
     //check the movie db link . what are default results
@@ -42,7 +45,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.e("lifecycle", "ACTIVITY onCreate");
-
 
 
         searchViewModel = ViewModelProviders.of(this).get(SearchViewModel.class);//create association between this activity and ViewModel.
@@ -108,8 +110,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
-
-        //searchView.setQueryHint(); changes query hint
+        searchView.setQueryHint("Movies");
 
         //setting search manager to hook up searchview with searchable.xml configuration
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
@@ -137,13 +138,73 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
- @Override
- protected void onNewIntent(Intent intent) {
-     if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-         String voiceQuery = intent.getStringExtra(SearchManager.QUERY);
-         searchViewModel.searchQuery.setValue(voiceQuery);
-         searchView.setQuery(voiceQuery,true);
-     }
- }
+    @Override
+    protected void onNewIntent(Intent intent) {
+        if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+            String voiceQuery = intent.getStringExtra(SearchManager.QUERY);
+            searchViewModel.searchQuery.setValue(voiceQuery);
+            searchView.setQuery(voiceQuery, true);
+        }
+    }
+
+
+    @Override
+    public void ChangeFrTab(int pos) {
+    Log.e("deb","deb" );
+    if(searchView!=null){
+        switch (pos) {
+            case 0:
+                searchView.setQueryHint("Movies");
+                break;
+            case 1:
+                searchView.setQueryHint("TV Series");
+                break;
+            case 2:
+                searchView.setQueryHint("Actors");
+                break;
+            default:
+                searchView.setQueryHint("Movies");
+        }
+    }
+
+
+    }
 }
 
+/*
+	 int month = 15;//changing month value will change case
+		 //try for instance : int month = 3;
+		 //after each case you must add break;
+	        String monthString;
+
+	        switch (month) {
+
+	            case 1:  monthString = "January";
+	                     break;
+	            case 2:  monthString = "February";
+	                     break;
+	            case 3:  monthString = "March";
+	                     break;
+	            case 4:  monthString = "April";
+	                     break;
+	            case 5:  monthString = "May";
+	                     break;
+	            case 6:  monthString = "June";
+	                     break;
+	            case 7:  monthString = "July";
+	                     break;
+	            case 8:  monthString = "August";
+	                     break;
+	            case 9:  monthString = "September";
+	                     break;
+	            case 10: monthString = "October";
+	                     break;
+	            case 11: monthString = "November";
+	                     break;
+	            case 12: monthString = "December";
+	                     break;
+	            default: monthString = "Invalid month";
+	                     break;
+	        }
+	        System.out.println(monthString);
+ */

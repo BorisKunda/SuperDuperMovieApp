@@ -21,15 +21,15 @@ public class SearchPagerAdapter extends FragmentStatePagerAdapter {
         switch (position) {
             case 0:
                 FragmentMovies fragmentMovies = new FragmentMovies();
-                Log.e("lifecycle","view pager M" );
+                Log.e("SearchPagerAdapter","view pager M" );
                 return fragmentMovies;
             case 1:
                 FragmentTVShows fragmentTVShows = new FragmentTVShows();
-                Log.e("lifecycle","view pager T" );
+                Log.e("SearchPagerAdapter","view pager T" );
                 return fragmentTVShows;
             case 2:
                 FragmentActors fragmentActors = new FragmentActors();
-                Log.e("lifecycle","view pager A" );
+                Log.e("SearchPagerAdapter","view pager A" );
                 return fragmentActors;
             default:
                 return null;
@@ -56,5 +56,6 @@ public class SearchPagerAdapter extends FragmentStatePagerAdapter {
                 return null;
         }
     }
+
 }
 

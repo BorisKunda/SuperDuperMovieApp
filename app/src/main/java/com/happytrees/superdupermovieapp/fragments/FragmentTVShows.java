@@ -115,6 +115,7 @@ public class FragmentTVShows extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+
         Log.e("lifecycle","FragmentTV onAttach" );
     }
 

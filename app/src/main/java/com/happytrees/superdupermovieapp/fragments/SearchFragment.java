@@ -19,6 +19,8 @@ import com.happytrees.superdupermovieapp.adapters.SearchPagerAdapter;
 
 public class SearchFragment extends Fragment {//PARENT FRAGMENT FOR SEARCH TABS  CHILD FRAGMENTS
 
+    private FragmentChanger fragmentChanger;
+
     public SearchFragment() {
         // Required empty public constructor
     }
@@ -32,16 +34,36 @@ public class SearchFragment extends Fragment {//PARENT FRAGMENT FOR SEARCH TABS 
         ((AppCompatActivity) getActivity()).getSupportActionBar().setElevation(0);//remove divider line between tabs and action bar
         ViewPager viewPager = v.findViewById(R.id.SearchFragmentViewPager);
         viewPager.setAdapter(new SearchPagerAdapter(getChildFragmentManager()));//getChildFragmentManager() cause we have child  fragments(tabs) inside SearchFragment
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                //do nothing
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+            fragmentChanger.ChangeFrTab(position);
+            Log.e("position",position +"" );
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                //do nothing
+            }
+        });
+
         TabLayout tabLayout = v.findViewById(R.id.search_tabs);//TabLayout provides a horizontal layout to display tabs
         tabLayout.setupWithViewPager(viewPager);
         return v;
     }
 
- /*   @Override
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        fragmentChanger = (FragmentChanger) context;
         Log.e("lifecycle","SearchFragment onAttach" );
     }
+/*
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
