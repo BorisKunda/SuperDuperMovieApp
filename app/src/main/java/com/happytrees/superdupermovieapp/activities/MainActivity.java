@@ -25,11 +25,13 @@ import com.happytrees.superdupermovieapp.fragments.SplashFragment;
 public class MainActivity extends AppCompatActivity implements FragmentChanger {
 
     // TO:DO
-    //Fix bug : no text in search .still there results
+    //grid bug on some screens check
+    //change search quarries . remove adult search and other .check quantity of results you will display
+    //persist rotation changes
+    //Fix bug : no text in search .still there results.rotation change
     //Fix Crash -> rotation change splash fragments
     //View Model -> boolean splashed save this variable in view model instead of using saveOnInstance
-    //clear search query after menu collapse
-    //check the movie db link . what are default results
+
 
 
     private boolean splashed = false;
@@ -114,7 +116,7 @@ public class MainActivity extends AppCompatActivity implements FragmentChanger {
 
         //setting search manager to hook up searchview with searchable.xml configuration
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));//getComponent because we use current activity as search activity
         return true;
 
 
@@ -139,7 +141,7 @@ public class MainActivity extends AppCompatActivity implements FragmentChanger {
 
 
     @Override
-    protected void onNewIntent(Intent intent) {
+    protected void onNewIntent(Intent intent) {//because I use launch mode single top on Main Activity . when ACTION_SEARCH intent received by activity it will call onNewIntent method instead of relaunching activity
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String voiceQuery = intent.getStringExtra(SearchManager.QUERY);
             searchViewModel.searchQuery.setValue(voiceQuery);
@@ -149,7 +151,7 @@ public class MainActivity extends AppCompatActivity implements FragmentChanger {
 
 
     @Override
-    public void ChangeFrTab(int pos) {
+    public void ChangeFrTab(int pos) {//Fragment Changer Interface instantiated in SearchFragment and cast to main activity(context).Position of current tab taken from view pager and put inside  ChangeFrTab method
     Log.e("deb","deb" );
     if(searchView!=null){
         switch (pos) {
@@ -171,40 +173,3 @@ public class MainActivity extends AppCompatActivity implements FragmentChanger {
     }
 }
 
-/*
-	 int month = 15;//changing month value will change case
-		 //try for instance : int month = 3;
-		 //after each case you must add break;
-	        String monthString;
-
-	        switch (month) {
-
-	            case 1:  monthString = "January";
-	                     break;
-	            case 2:  monthString = "February";
-	                     break;
-	            case 3:  monthString = "March";
-	                     break;
-	            case 4:  monthString = "April";
-	                     break;
-	            case 5:  monthString = "May";
-	                     break;
-	            case 6:  monthString = "June";
-	                     break;
-	            case 7:  monthString = "July";
-	                     break;
-	            case 8:  monthString = "August";
-	                     break;
-	            case 9:  monthString = "September";
-	                     break;
-	            case 10: monthString = "October";
-	                     break;
-	            case 11: monthString = "November";
-	                     break;
-	            case 12: monthString = "December";
-	                     break;
-	            default: monthString = "Invalid month";
-	                     break;
-	        }
-	        System.out.println(monthString);
- */

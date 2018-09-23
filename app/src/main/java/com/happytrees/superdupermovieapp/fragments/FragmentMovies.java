@@ -119,6 +119,7 @@ public class FragmentMovies extends Fragment {
 
         SearchViewModel movieModel = ViewModelProviders.of(getActivity()).get(SearchViewModel.class);//create association between this fragment and ViewModel.
         movieModel.searchQuery.observe(this, o -> {
+
             //Retrofit
             if (movieModel.searchQuery != null) {
                 Log.e("deb", "deb");
@@ -128,6 +129,7 @@ public class FragmentMovies extends Fragment {
                 call.enqueue(new Callback<SearchResponse>() {
                     @Override
                     public void onResponse(Call<SearchResponse> call, Response<SearchResponse> response) {
+                        Log.e("d","d");
                         ArrayList<SearchMovieTVResult> searchMovieResults = new ArrayList<>();
                         ArrayList<SearchMovieTVResult> searchMovieResultsFiltered = new ArrayList<>();//search movie results where those without poster filtered out
                         SearchResponse searchResponse = response.body();
@@ -157,12 +159,12 @@ public class FragmentMovies extends Fragment {
                             //no results text view
                         }
 
-                        RecyclerView recyclerView = m.findViewById(R.id.searchMovielist);
+                    /*    RecyclerView recyclerView = m.findViewById(R.id.searchMovielist);
                         recyclerView.setHasFixedSize(true);//If the size(width,height) of the RecyclerView doesn't depend on the adapter content you can setHasFixedSize(true). it will improve recycler view performance.
                         AutoFitGridLayoutManager autoFitGridLayoutManager = new AutoFitGridLayoutManager(getActivity(), 500);
                         recyclerView.setLayoutManager(autoFitGridLayoutManager);
                         MovieSearchAdapter movieSearchAdapter = new MovieSearchAdapter(getActivity(), searchMovieResultsFiltered);
-                        recyclerView.setAdapter(movieSearchAdapter);
+                        recyclerView.setAdapter(movieSearchAdapter); */
 
 
                     }
